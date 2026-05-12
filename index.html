@@ -56,16 +56,27 @@
 
     <section id="upload" class="section upload-guide">
       <div class="container">
-        <h2>Manual Upload Guide</h2>
-        <p>To upload photos, certificates, or a LinkedIn-style post manually, add the files to your portfolio folder and update the website files in the same location. This page is built as a static website, so uploads are handled by replacing or adding files directly.</p>
-        <ul>
-          <li><strong>Upload photos:</strong> add image files to the same folder as this website, then update the gallery HTML if you want to show them.</li>
-          <li><strong>Upload certificate:</strong> if you want to include a certificate later, place the file in the portfolio folder and update the site link accordingly.</li>
-          <li><strong>LinkedIn post suggestion:</strong> share your portfolio link with a post about your current internship, brand management role, and recent certifications.</li>
-        </ul>
-        <p>Example LinkedIn post idea:</p>
-        <blockquote>
-          Excited to continue my Brand Management internship at Nilons Company while pursuing PGDM Marketing. Check out my portfolio and certifications here: <a href="https://iamashay01.github.io/Ashay-Portfolio-Web/" target="_blank" rel="noreferrer">My Portfolio</a>.</blockquote>
+        <h2>Upload Files</h2>
+        <p>Tap the button below to open your device files and select images or videos. Selected files are previewed locally in the gallery area.</p>
+        <div class="upload-actions">
+          <input id="fileInput" class="file-input" type="file" accept="image/*,video/*" multiple />
+          <button class="button" type="button" id="uploadButton">Select photos or videos</button>
+        </div>
+        <div class="upload-note">
+          This is a local file chooser preview. Files are not uploaded to a server from this static site.
+        </div>
+        <div id="previewGrid" class="file-preview-grid"></div>
+
+        <h3>Manual Upload to Website</h3>
+        <p>To add files to your live website, upload them manually to your GitHub repository:</p>
+        <ol>
+          <li>Go to your GitHub repository: <a href="https://github.com/IamAshay01/Ashay-Portfolio-Web" target="_blank" rel="noreferrer">IamAshay01/Ashay-Portfolio-Web</a></li>
+          <li>Click "Add file" > "Upload files"</li>
+          <li>Drag and drop your photos/videos into the upload area</li>
+          <li>Commit the changes with a message like "Add new portfolio files"</li>
+          <li>Wait a few minutes for GitHub Pages to update the live site</li>
+        </ol>
+        <p>After uploading, you can update the gallery section in <code>index.html</code> to display the new files.</p>
       </div>
     </section>
 
@@ -192,6 +203,54 @@
       </div>
     </section>
   </main>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const uploadButton = document.getElementById('uploadButton');
+    const previewGrid = document.getElementById('previewGrid');
+
+    uploadButton.addEventListener('click', () => {
+      fileInput.click();
+    });
+
+    fileInput.addEventListener('change', (event) => {
+      const files = Array.from(event.target.files || []);
+      previewGrid.innerHTML = '';
+      if (files.length === 0) {
+        return;
+      }
+      files.forEach((file) => {
+        const item = document.createElement('div');
+        item.className = 'preview-item';
+
+        if (file.type.startsWith('image/')) {
+          const img = document.createElement('img');
+          img.src = URL.createObjectURL(file);
+          img.onload = () => URL.revokeObjectURL(img.src);
+          item.appendChild(img);
+        } else if (file.type.startsWith('video/')) {
+          const video = document.createElement('video');
+          video.src = URL.createObjectURL(file);
+          video.controls = true;
+          video.preload = 'metadata';
+          video.onloadeddata = () => URL.revokeObjectURL(video.src);
+          item.appendChild(video);
+        } else {
+          const fallback = document.createElement('div');
+          fallback.textContent = file.name;
+          fallback.style.padding = '1rem';
+          item.appendChild(fallback);
+        }
+
+        const meta = document.createElement('div');
+        meta.className = 'preview-meta';
+        meta.textContent = `${file.name} (${Math.round(file.size / 1024)} KB)`;
+        item.appendChild(meta);
+
+        previewGrid.appendChild(item);
+      });
+    });
+  </script>
 
   <footer class="site-footer">
     <div class="container">
