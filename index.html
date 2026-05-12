@@ -15,7 +15,6 @@
       </div>
       <nav class="nav-links">
         <a href="#about">About</a>
-        <a href="#upload">Upload Guide</a>
         <a href="#experience">Experience</a>
         <a href="#skills">Skills</a>
         <a href="#education">Education</a>
@@ -51,32 +50,6 @@
       <div class="container">
         <h2>About Me</h2>
         <p>Results-driven professional with expertise in market analysis, customer insights, competitor benchmarking, and data-driven sales strategy. I specialize in digital marketing, data analytics, and brand strategy to help organizations make informed decisions and grow their impact.</p>
-      </div>
-    </section>
-
-    <section id="upload" class="section upload-guide">
-      <div class="container">
-        <h2>Upload Files</h2>
-        <p>Tap the button below to open your device files and select images or videos. Selected files are previewed locally in the gallery area.</p>
-        <div class="upload-actions">
-          <input id="fileInput" class="file-input" type="file" accept="image/*,video/*" multiple />
-          <button class="button" type="button" id="uploadButton">Select photos or videos</button>
-        </div>
-        <div class="upload-note">
-          This is a local file chooser preview. Files are not uploaded to a server from this static site.
-        </div>
-        <div id="previewGrid" class="file-preview-grid"></div>
-
-        <h3>Manual Upload to Website</h3>
-        <p>To add files to your live website, upload them manually to your GitHub repository:</p>
-        <ol>
-          <li>Go to your GitHub repository: <a href="https://github.com/IamAshay01/Ashay-Portfolio-Web" target="_blank" rel="noreferrer">IamAshay01/Ashay-Portfolio-Web</a></li>
-          <li>Click "Add file" > "Upload files"</li>
-          <li>Drag and drop your photos/videos into the upload area</li>
-          <li>Commit the changes with a message like "Add new portfolio files"</li>
-          <li>Wait a few minutes for GitHub Pages to update the live site</li>
-        </ol>
-        <p>After uploading, you can update the gallery section in <code>index.html</code> to display the new files.</p>
       </div>
     </section>
 
@@ -203,54 +176,6 @@
       </div>
     </section>
   </main>
-
-  <script>
-    const fileInput = document.getElementById('fileInput');
-    const uploadButton = document.getElementById('uploadButton');
-    const previewGrid = document.getElementById('previewGrid');
-
-    uploadButton.addEventListener('click', () => {
-      fileInput.click();
-    });
-
-    fileInput.addEventListener('change', (event) => {
-      const files = Array.from(event.target.files || []);
-      previewGrid.innerHTML = '';
-      if (files.length === 0) {
-        return;
-      }
-      files.forEach((file) => {
-        const item = document.createElement('div');
-        item.className = 'preview-item';
-
-        if (file.type.startsWith('image/')) {
-          const img = document.createElement('img');
-          img.src = URL.createObjectURL(file);
-          img.onload = () => URL.revokeObjectURL(img.src);
-          item.appendChild(img);
-        } else if (file.type.startsWith('video/')) {
-          const video = document.createElement('video');
-          video.src = URL.createObjectURL(file);
-          video.controls = true;
-          video.preload = 'metadata';
-          video.onloadeddata = () => URL.revokeObjectURL(video.src);
-          item.appendChild(video);
-        } else {
-          const fallback = document.createElement('div');
-          fallback.textContent = file.name;
-          fallback.style.padding = '1rem';
-          item.appendChild(fallback);
-        }
-
-        const meta = document.createElement('div');
-        meta.className = 'preview-meta';
-        meta.textContent = `${file.name} (${Math.round(file.size / 1024)} KB)`;
-        item.appendChild(meta);
-
-        previewGrid.appendChild(item);
-      });
-    });
-  </script>
 
   <footer class="site-footer">
     <div class="container">
